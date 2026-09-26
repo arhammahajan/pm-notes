@@ -68,7 +68,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{fontspec}
 
-\newfontfamily\hindi[Script=Devanagari]{Devanagari MT}
+% Devanagari MT only ships with macOS. Fall back to another Devanagari font
+% when it is missing (e.g. on Linux/CI) so the document builds anywhere.
+% \dn is not used in the text yet, so no font at all is also acceptable.
+\IfFontExistsTF{Devanagari MT}
+  {\newfontfamily\hindi[Script=Devanagari]{Devanagari MT}}
+  {\IfFontExistsTF{Noto Sans Devanagari}
+     {\newfontfamily\hindi[Script=Devanagari]{Noto Sans Devanagari}}
+     {\newcommand{\hindi}{}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % LINKS & REFERENCES
